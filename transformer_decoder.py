@@ -93,3 +93,24 @@ print(f"decoder_state  : {decoder_state.shape}")
 
 cross_out = cross_attention(encoder_output, decoder_state)
 print(f"Saída Cross-Attention : {cross_out.shape} ✓")
+
+
+print("\n" + "=" * 55)
+print("TAREFA 3 — Loop de Inferência Auto-Regressivo")
+print("=" * 55)
+
+MAX_STEPS   = 20
+EOS_STEP    = 5
+current_ids = [TOKEN_START]
+
+print(f"\nSequência inicial : {[id_to_token[i] for i in current_ids]}\n")
+
+step = 0
+while True:
+    step     += 1
+    probs     = generate_next_token(current_ids, encoder_output)
+    next_id   = TOKEN_EOS if step == EOS_STEP else int(np.argmax(probs))
+    next_token = id_to_token[next_id]
+    current_ids.append(next_id)
+
+    print(f"  Passo {step:02d} → '{next_token}'  (prob={probs[next_id]:.4f})")
