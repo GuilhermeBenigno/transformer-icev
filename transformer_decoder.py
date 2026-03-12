@@ -114,3 +114,12 @@ while True:
     current_ids.append(next_id)
 
     print(f"  Passo {step:02d} → '{next_token}'  (prob={probs[next_id]:.4f})")
+    
+    if next_token == "<EOS>":
+        print("\n→ Token <EOS> detectado. Geração encerrada.")
+        break
+    if step >= MAX_STEPS:
+        print("\n→ Limite máximo de passos atingido.")
+        break
+
+print(f"\nFrase final : {[id_to_token[i] for i in current_ids]}")
