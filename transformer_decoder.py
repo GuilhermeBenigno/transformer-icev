@@ -79,3 +79,17 @@ attn_weights  = softmax(scores_masked)
 print("\nPesos de atenção após Softmax com máscara:")
 print(np.round(attn_weights[0], 4))
 print("\n→ Posições futuras são estritamente 0.0 ✓")
+
+
+print("\n" + "=" * 55)
+print("TAREFA 2 — Cross-Attention (Ponte Encoder-Decoder)")
+print("=" * 55)
+
+encoder_output = np.random.randn(1, 10, D_MODEL)
+decoder_state  = np.random.randn(1,  4, D_MODEL)
+
+print(f"\nencoder_output : {encoder_output.shape}")
+print(f"decoder_state  : {decoder_state.shape}")
+
+cross_out = cross_attention(encoder_output, decoder_state)
+print(f"Saída Cross-Attention : {cross_out.shape} ✓")
