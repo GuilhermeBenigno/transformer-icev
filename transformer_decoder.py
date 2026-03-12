@@ -56,3 +56,8 @@ def generate_next_token(current_sequence_ids, encoder_out):
         decoder_input @ WV_sa,
         mask=mask
     )
+    dec_state   = self_att + decoder_input
+    cross_out   = cross_attention(encoder_out, dec_state)
+    last_hidden = cross_out[0, -1, :]
+    return softmax(last_hidden @ W_out)
+
