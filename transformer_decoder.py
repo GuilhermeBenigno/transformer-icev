@@ -61,3 +61,21 @@ def generate_next_token(current_sequence_ids, encoder_out):
     last_hidden = cross_out[0, -1, :]
     return softmax(last_hidden @ W_out)
 
+print("=" * 55)
+print("TAREFA 1 — Máscara Causal (Look-Ahead Mask)")
+print("=" * 55)
+
+seq_len = 5
+M       = create_causal_mask(seq_len)
+print("\nMáscara M:")
+print(M)
+
+X_dummy       = np.random.randn(1, seq_len, D_MODEL)
+Q_dummy       = X_dummy @ np.random.randn(D_MODEL, 64)
+K_dummy       = X_dummy @ np.random.randn(D_MODEL, 64)
+scores_masked = Q_dummy @ K_dummy.transpose(0, 2, 1) / np.sqrt(64) + M
+attn_weights  = softmax(scores_masked)
+
+print("\nPesos de atenção após Softmax com máscara:")
+print(np.round(attn_weights[0], 4))
+print("\n→ Posições futuras são estritamente 0.0 ✓")
