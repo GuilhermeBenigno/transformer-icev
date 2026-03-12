@@ -37,3 +37,22 @@ def cross_attention(encoder_out, decoder_state):
     K  = encoder_out   @ WK
     V  = encoder_out   @ WV
     return scaled_dot_product_attention(Q, K, V, mask=None)
+
+W_out = np.random.randn(D_MODEL, VOCAB_SIZE) * 0.01
+
+def generate_next_token(current_sequence_ids, encoder_out):
+    seq_len         = len(current_sequence_ids)
+    embedding_table = np.random.randn(VOCAB_SIZE, D_MODEL) * 0.1
+    decoder_input   = embedding_table[current_sequence_ids][np.newaxis, :, :]
+
+    WQ_sa = np.random.randn(D_MODEL, D_MODEL) * np.sqrt(2.0 / D_MODEL)
+    WK_sa = np.random.randn(D_MODEL, D_MODEL) * np.sqrt(2.0 / D_MODEL)
+    WV_sa = np.random.randn(D_MODEL, D_MODEL) * np.sqrt(2.0 / D_MODEL)
+
+    mask     = create_causal_mask(seq_len)
+    self_att = scaled_dot_product_attention(
+        decoder_input @ WQ_sa,
+        decoder_input @ WK_sa,
+        decoder_input @ WV_sa,
+        mask=mask
+    )
